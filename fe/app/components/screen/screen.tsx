@@ -22,12 +22,9 @@ export const Screen = ({
   }
 
   return (
-    <Carousel arrows infinite={false}>
+    <div className='flex snap-x snap-mandatory overflow-y-auto bg-[#B3CEE5]'>
       {data?.map((item: ProductDetailType) => (
-        <div
-          key={item.productId}
-          className='flex bg-[#B3CEE5] p-[24px] md:p-[48px]'
-        >
+        <div key={item.productId} className='snap-always snap-center p-[24px]'>
           <ProductDetail
             data={item}
             isLoading={isLoading}
@@ -37,6 +34,6 @@ export const Screen = ({
           />
         </div>
       ))}
-    </Carousel>
+    </div>
   );
 };

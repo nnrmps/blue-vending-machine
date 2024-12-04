@@ -73,7 +73,7 @@ export const Home = () => {
           </div>
         </Col>
 
-        <Col span={24}>
+        <Col className='gutter-row' span={24}>
           <Screen
             totalPrice={totalPrice}
             sumPrice={sumPrice}
@@ -82,42 +82,74 @@ export const Home = () => {
         </Col>
 
         <Col className='gutter-row' span={6}>
-          <Button block onClick={() => setCoins1((prev) => prev + 1)}>
+          <Button
+            style={{ minHeight: '50px' }}
+            block
+            onClick={() => setCoins1((prev) => prev + 1)}
+          >
             1
           </Button>
         </Col>
         <Col className='gutter-row' span={6}>
-          <Button block onClick={() => setCoins5((prev) => prev + 1)}>
+          <Button
+            style={{ minHeight: '50px' }}
+            block
+            onClick={() => setCoins5((prev) => prev + 1)}
+          >
             5
           </Button>
         </Col>
         <Col className='gutter-row' span={6}>
-          <Button block onClick={() => setCoins10((prev) => prev + 1)}>
+          <Button
+            style={{ minHeight: '50px' }}
+            block
+            onClick={() => setCoins10((prev) => prev + 1)}
+          >
             10
           </Button>
         </Col>
         <Col className='gutter-row' span={6}>
-          <Button block onClick={() => setBank20((prev) => prev + 1)}>
+          <Button
+            style={{ minHeight: '50px' }}
+            block
+            onClick={() => setBank20((prev) => prev + 1)}
+          >
             20
           </Button>
         </Col>
         <Col className='gutter-row' span={6}>
-          <Button block onClick={() => setBank50((prev) => prev + 1)}>
+          <Button
+            style={{ minHeight: '50px' }}
+            block
+            onClick={() => setBank50((prev) => prev + 1)}
+          >
             50
           </Button>
         </Col>
         <Col className='gutter-row' span={6}>
-          <Button block onClick={() => setBank100((prev) => prev + 1)}>
+          <Button
+            style={{ minHeight: '50px' }}
+            block
+            onClick={() => setBank100((prev) => prev + 1)}
+          >
             100
           </Button>
         </Col>
         <Col className='gutter-row' span={6}>
-          <Button block onClick={() => setBank500((prev) => prev + 1)}>
+          <Button
+            style={{ minHeight: '50px' }}
+            block
+            onClick={() => setBank500((prev) => prev + 1)}
+          >
             500
           </Button>
         </Col>
         <Col className='gutter-row' span={6}>
-          <Button block onClick={() => setBank1000((prev) => prev + 1)}>
+          <Button
+            style={{ minHeight: '50px' }}
+            block
+            onClick={() => setBank1000((prev) => prev + 1)}
+          >
             1000
           </Button>
         </Col>
