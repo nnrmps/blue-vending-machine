@@ -18,6 +18,14 @@ const CheckoutPayloadSchema = z.object({
 
 const CheckoutResponseSchema = z.object({
   totalChange: z.number(),
+  coins1: z.number(),
+  coins5: z.number(),
+  coins10: z.number(),
+  bank20: z.number(),
+  bank50: z.number(),
+  bank100: z.number(),
+  bank500: z.number(),
+  bank1000: z.number(),
 });
 
 export type totalPriceType = z.infer<typeof TotalSchema>;
