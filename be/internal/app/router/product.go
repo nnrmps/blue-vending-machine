@@ -2,8 +2,8 @@ package router
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/google/uuid"
 	"github.com/nnrmps/blue-vending-machine/be/internal/app/service"
+	"github.com/nnrmps/blue-vending-machine/be/pkg/response_model"
 )
 
 type ProductController struct {
@@ -15,15 +15,17 @@ func NewProductController(productService service.ProductService) *ProductControl
 }
 
 func (p ProductController) InitRouter(router fiber.Router) {
-	router.Get("/product/:productID", p.getProductByID)
+	router.Get("/products", p.getProductList)
 }
 
-func (p ProductController) getProductByID(c *fiber.Ctx) error {
-	productID := uuid.New()
-	res, err := p.productService.GetProductByID(c.Context(), productID)
+func (p ProductController) getProductList(ctx *fiber.Ctx) error {
+	res, err := p.productService.GetProductList(ctx.Context())
 	if err != nil {
 		return fiber.NewError(fiber.StatusServiceUnavailable, err.Error())
 	}
-	_ = c.JSON(res)
+	_ = ctx.Status(200)
+	_ = ctx.JSON(response_model.BaseResponse[[]response_model.Product]{
+		Data: &res,
+	})
 	return nil
 }

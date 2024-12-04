@@ -1,24 +1,39 @@
 package main
 
 import (
+	"fmt"
 	"github.com/gofiber/fiber/v2"
+	"github.com/nnrmps/blue-vending-machine/be/internal/app/persistence"
 	"github.com/nnrmps/blue-vending-machine/be/internal/app/repository"
 	"github.com/nnrmps/blue-vending-machine/be/internal/app/router"
 	"github.com/nnrmps/blue-vending-machine/be/internal/app/service"
+	"github.com/nnrmps/blue-vending-machine/be/internal/app/setting"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
+
+func init() {
+	setting.InitConfiguration()
+}
 
 func main() {
 	app := fiber.New()
 
 	groupApi := app.Group("/api")
-	//db := initGorm()
-	dsn := "host=localhost user=root password=password dbname=postgres port=5432 sslmode=disable TimeZone=Asia/Bangkok"
+	//init DB
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Bangkok",
+		setting.AppConfig.Database.Host,
+		setting.AppConfig.Database.Username,
+		setting.AppConfig.Database.Password,
+		setting.AppConfig.Database.Name,
+		setting.AppConfig.Database.Port)
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	db.AutoMigrate(persistence.Product{})
+	db.AutoMigrate(persistence.ReservedMoney{})
 	if err != nil {
 		panic("failed to connect database")
 	}
+
 	//health
 	healthService := service.NewHealthService()
 	healthController := router.NewHealthController(healthService)
@@ -29,6 +44,12 @@ func main() {
 	productService := service.NewProductService(db, productRepository)
 	productController := router.NewProductController(productService)
 	productController.InitRouter(groupApi)
+
+	//checkout
+	checkoutRepository := repository.NewCheckoutRepository()
+	checkoutService := service.NewCheckoutService(db, checkoutRepository)
+	checkoutController := router.NewCheckoutController(checkoutService)
+	checkoutController.InitRouter(groupApi)
 
 	_ = app.Listen(":8080")
 }

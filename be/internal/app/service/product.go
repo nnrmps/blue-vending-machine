@@ -2,14 +2,13 @@ package service
 
 import (
 	"context"
-	"github.com/google/uuid"
 	"github.com/nnrmps/blue-vending-machine/be/internal/app/repository"
 	"github.com/nnrmps/blue-vending-machine/be/pkg/response_model"
 	"gorm.io/gorm"
 )
 
 type ProductService interface {
-	GetProductByID(ctx context.Context, productID uuid.UUID) (response_model.Product, error)
+	GetProductList(ctx context.Context) ([]response_model.Product, error)
 }
 
 type productService struct {
@@ -24,14 +23,11 @@ func NewProductService(db *gorm.DB, productRepository repository.ProductReposito
 	}
 }
 
-func (p productService) GetProductByID(ctx context.Context, productID uuid.UUID) (response_model.Product, error) {
-	res := p.productRepository.FindByID(ctx, p.db, productID)
-	newRes := response_model.Product{
-		ProductId: res.ProductId.String(),
-		Name:      res.Name,
-		ImageUrl:  res.Image,
-		Stock:     res.Stock,
-		Price:     res.Price,
+func (p productService) GetProductList(ctx context.Context) ([]response_model.Product, error) {
+	res := p.productRepository.GetList(ctx, p.db)
+	newRes := make([]response_model.Product, 0)
+	for _, value := range res {
+		newRes = append(newRes, response_model.Product{value.ProductID.String(), value.Name, value.Image, value.Stock, value.Price})
 	}
 	return newRes, nil
 }
