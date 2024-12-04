@@ -13,5 +13,5 @@ type Money struct {
 
 type Checkout struct {
 	ProductId string `json:"productId"`
-	Total     *Money `json:"total"`
+	Total     Money  `json:"total"`
 }

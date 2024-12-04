@@ -25,7 +25,7 @@ func (c CheckoutController) checkoutByProductID(ctx *fiber.Ctx) error {
 	if err := ctx.BodyParser(body); err != nil {
 		return err
 	}
-	res, err := c.checkoutService.CheckoutProduct(ctx.Context(), body.ProductId)
+	res, err := c.checkoutService.CheckoutProduct(ctx.Context(), body.ProductId, body.Total)
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}

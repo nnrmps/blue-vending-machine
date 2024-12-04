@@ -47,7 +47,7 @@ func main() {
 
 	//checkout
 	checkoutRepository := repository.NewCheckoutRepository()
-	checkoutService := service.NewCheckoutService(db, checkoutRepository)
+	checkoutService := service.NewCheckoutService(db, checkoutRepository, productRepository)
 	checkoutController := router.NewCheckoutController(checkoutService)
 	checkoutController.InitRouter(groupApi)
 
