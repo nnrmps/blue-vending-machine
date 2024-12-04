@@ -63,7 +63,18 @@ func (c checkoutService) CheckoutProduct(ctx context.Context, productID string, 
 	reservedMoney = updateReservedMoney(reservedMoney, total)
 
 	totalChange := totalDeposit - productDetail.Price
+
 	moneyList := []int64{1000, 500, 100, 50, 20, 10, 5, 1}
+	finalReservedMoney := map[int64]int64{
+		1000: 0,
+		500:  0,
+		100:  0,
+		50:   0,
+		20:   0,
+		10:   0,
+		5:    0,
+		1:    0,
+	}
 	i := 0
 
 	for totalChange > 0 {
@@ -72,6 +83,7 @@ func (c checkoutService) CheckoutProduct(ctx context.Context, productID string, 
 		}
 		if reservedMoney[moneyList[i]] > 0 && totalChange-moneyList[i] >= 0 {
 			reservedMoney[moneyList[i]] -= 1
+			finalReservedMoney[moneyList[i]] += 1
 			totalChange = totalChange - moneyList[i]
 			continue
 		}
@@ -103,6 +115,14 @@ func (c checkoutService) CheckoutProduct(ctx context.Context, productID string, 
 	tx.Commit()
 	newRes := response_model.Checkout{
 		TotalChange: totalDeposit - productDetail.Price,
+		Coins1:      finalReservedMoney[1],
+		Coins5:      finalReservedMoney[5],
+		Coins10:     finalReservedMoney[10],
+		Bank20:      finalReservedMoney[20],
+		Bank50:      finalReservedMoney[50],
+		Bank100:     finalReservedMoney[100],
+		Bank500:     finalReservedMoney[500],
+		Bank1000:    finalReservedMoney[1000],
 	}
 
 	return newRes, nil
