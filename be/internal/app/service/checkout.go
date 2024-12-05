@@ -48,12 +48,12 @@ func (c checkoutService) CheckoutProduct(ctx context.Context, productID string, 
 	}
 
 	if productDetail.Stock <= 0 {
-		return response_model.Checkout{}, errors.New("Out of Stock!!")
+		return response_model.Checkout{}, errors.New("Sorry, product out of stock")
 	}
 
 	totalDeposit := (total.Coins1 * 1) + (total.Coins5 * 5) + (total.Coins10 * 10) + (total.Bank20 * 20) + (total.Bank50 * 50) + (total.Bank100 * 100) + (total.Bank500 * 500) + (total.Bank1000 * 1000)
 	if totalDeposit < productDetail.Price {
-		return response_model.Checkout{}, errors.New("not enough deposit")
+		return response_model.Checkout{}, errors.New("Sorry, not enough deposit")
 	}
 
 	reservedMoney, err := c.checkoutRepository.GetReservedMoney(ctx, c.db)
@@ -79,7 +79,7 @@ func (c checkoutService) CheckoutProduct(ctx context.Context, productID string, 
 
 	for totalChange > 0 {
 		if i >= len(moneyList) {
-			return response_model.Checkout{}, errors.New("No Money leaw ja!!!")
+			return response_model.Checkout{}, errors.New("Sorry, don't have enough change.")
 		}
 		if reservedMoney[moneyList[i]] > 0 && totalChange-moneyList[i] >= 0 {
 			reservedMoney[moneyList[i]] -= 1

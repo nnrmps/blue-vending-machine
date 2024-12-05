@@ -51,5 +51,11 @@ func main() {
 	checkoutController := router.NewCheckoutController(checkoutService)
 	checkoutController.InitRouter(groupApi)
 
+	//reserve-money
+	reservedRepository := repository.NewCheckoutRepository()
+	reservedService := service.NewReservedMoneyService(db, reservedRepository)
+	reservedController := router.NewReservedMoneyController(reservedService)
+	reservedController.InitRouter(groupApi)
+
 	_ = app.Listen(":8080")
 }
