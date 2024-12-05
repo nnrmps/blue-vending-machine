@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 
 const API_ENDPOINT = '/admin-api';
 export const adminAxiosInstance = axios.create({

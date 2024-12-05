@@ -1,7 +1,7 @@
 import { useGetProductList } from '@/hooks/use-get-product-list';
-import { ProductDetailType } from '@/types/use-get-product-list.type';
 import { ProductDetail } from '../product-detail/product-detail';
 import { totalPriceType } from '@/types/use-checkout-product.type';
+import { GetProductDetail } from '@/types/use-get-product-list.type';
 
 type ScreenProps = {
   totalPrice: totalPriceType;
@@ -24,7 +24,7 @@ export const Screen = ({
 
   return (
     <div className='flex h-[400px] items-center snap-x snap-mandatory overflow-y-auto rounded-[8px] bg-[#B3CEE5]'>
-      {data?.map((item: ProductDetailType) => (
+      {data?.map((item: GetProductDetail) => (
         <div key={item.productId} className='snap-always snap-center p-[24px]'>
           <ProductDetail
             data={item}

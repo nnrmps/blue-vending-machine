@@ -41,7 +41,7 @@ export const TableProduct = () => {
       title: '',
       dataIndex: 'action',
       key: 'action',
-      render: (_, record: GetProductDetail) => (
+      render: (_index: number, record: GetProductDetail) => (
         <div className='flex gap-[12px]'>
           <Button
             size='small'

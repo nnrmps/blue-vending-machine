@@ -4,11 +4,7 @@ import { HomePage } from './pages/home-page/home-page';
 import { AdminPage } from './pages/admin-page/admin-page';
 import { Button, Input, Layout, Modal } from 'antd';
 import { Header } from 'antd/es/layout/layout';
-import {
-  LoginOutlined,
-  LogoutOutlined,
-  SettingOutlined,
-} from '@ant-design/icons';
+import { LoginOutlined, LogoutOutlined } from '@ant-design/icons';
 import { useLogin } from './hooks/use-login';
 export const App: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

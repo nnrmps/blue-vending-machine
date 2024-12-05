@@ -11,9 +11,9 @@ export const AdminPage = () => {
 
   useEffect(() => {
     if (!token) {
-      return navigate('/');
+      navigate('/');
     }
-  }, []);
+  }, [token]);
 
   return (
     <Tabs>

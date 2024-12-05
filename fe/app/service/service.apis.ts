@@ -31,7 +31,7 @@ export const Service = {
     payload: CheckoutPayload
   ): Promise<CheckoutResponse> => {
     const { data } = await axiosInstance.post(ServiceAPI.checkout, payload);
-    return data;
+    return data.data;
   },
   login: async (payload: LoginSchemaType) => {
     const { data } = await axiosInstance.post(ServiceAPI.login, payload);

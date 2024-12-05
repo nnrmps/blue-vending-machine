@@ -1,15 +1,12 @@
 import { Card, Modal, Space, Typography } from 'antd';
-import { ProductDetailType } from '@/types/use-get-product-list.type';
 import { ShoppingOutlined, StopOutlined } from '@ant-design/icons';
 import { GradientButton } from '../button/gradient-button';
 import { useCheckoutProduct } from '@/hooks/use-checkout-product';
-import {
-  CheckoutResponse,
-  totalPriceType,
-} from '@/types/use-checkout-product.type';
+import { totalPriceType } from '@/types/use-checkout-product.type';
 import { AxiosError } from 'axios';
+import { GetProductDetail } from '@/types/use-get-product-list.type';
 type ProductDetailProps = {
-  data: ProductDetailType;
+  data: GetProductDetail;
   isLoading: boolean;
   totalPrice: totalPriceType;
   sumPrice: number;
@@ -66,17 +63,6 @@ export const ProductDetail = ({
       total: totalPrice,
     })
       .then((res) => {
-        const {
-          coins1,
-          coins5,
-          coins10,
-          bank20,
-          bank50,
-          bank100,
-          bank500,
-          bank1000,
-          totalChange,
-        }: CheckoutResponse = res?.data;
         modal.success({
           title: (
             <div style={{ fontSize: '20px', marginTop: '-4px' }}>
@@ -92,7 +78,7 @@ export const ProductDetail = ({
                   </Text>
                   <Text style={{ fontSize: '16px' }}>
                     <Space direction='horizontal'>
-                      <span>{totalChange}</span>
+                      <span>{res?.totalChange}</span>
                       <span>THB</span>
                     </Space>
                   </Text>
@@ -105,7 +91,7 @@ export const ProductDetail = ({
                   </Text>
                   <Text style={{ fontSize: '12px' }}>
                     <Space direction='horizontal'>
-                      <span>{coins1}</span>
+                      <span>{res?.coins1}</span>
                       <span>coins</span>
                     </Space>
                   </Text>
@@ -116,7 +102,7 @@ export const ProductDetail = ({
                   </Text>
                   <Text style={{ fontSize: '12px' }}>
                     <Space direction='horizontal'>
-                      <span>{coins5}</span>
+                      <span>{res?.coins5}</span>
                       <span>coins</span>
                     </Space>
                   </Text>
@@ -127,7 +113,7 @@ export const ProductDetail = ({
                   </Text>
                   <Text style={{ fontSize: '12px' }}>
                     <Space direction='horizontal'>
-                      <span>{coins10}</span>
+                      <span>{res?.coins10}</span>
                       <span>coins</span>
                     </Space>
                   </Text>
@@ -138,7 +124,7 @@ export const ProductDetail = ({
                   </Text>
                   <Text style={{ fontSize: '12px' }}>
                     <Space direction='horizontal'>
-                      <span>{bank20}</span>
+                      <span>{res?.bank20}</span>
                       <span>banknotes</span>
                     </Space>
                   </Text>
@@ -149,7 +135,7 @@ export const ProductDetail = ({
                   </Text>
                   <Text style={{ fontSize: '12px' }}>
                     <Space direction='horizontal'>
-                      <span>{bank50}</span>
+                      <span>{res?.bank50}</span>
                       <span>banknotes</span>
                     </Space>
                   </Text>
@@ -160,7 +146,7 @@ export const ProductDetail = ({
                   </Text>
                   <Text style={{ fontSize: '12px' }}>
                     <Space direction='horizontal'>
-                      <span>{bank100}</span>
+                      <span>{res?.bank100}</span>
                       <span>banknotes</span>
                     </Space>
                   </Text>
@@ -171,7 +157,7 @@ export const ProductDetail = ({
                   </Text>
                   <Text style={{ fontSize: '12px' }}>
                     <Space direction='horizontal'>
-                      <span>{bank500}</span>
+                      <span>{res?.bank500}</span>
                       <span>banknotes</span>
                     </Space>
                   </Text>
@@ -182,7 +168,7 @@ export const ProductDetail = ({
                   </Text>
                   <Text style={{ fontSize: '12px' }}>
                     <Space direction='horizontal'>
-                      <span>{bank1000}</span>
+                      <span>{res?.bank1000}</span>
                       <span>banknotes</span>
                     </Space>
                   </Text>
