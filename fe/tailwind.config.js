@@ -1,5 +1,7 @@
+import tailwindcssAnimate from 'tailwindcss-animate';
+
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
   darkMode: ['class'],
   content: ['./public/index.html', './app/**/*.{ts,tsx,css}'],
   presets: [],
@@ -17,7 +19,7 @@ module.exports = {
     },
     extend: {},
     plugins: [
-      require('tailwindcss-animate'),
+      tailwindcssAnimate,
       ({ addUtilities }) => {
         addUtilities({
           '.typography-heading-1': {
