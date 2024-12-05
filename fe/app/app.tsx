@@ -4,23 +4,54 @@ import { HomePage } from './pages/home-page/home-page';
 import { AdminPage } from './pages/admin-page/admin-page';
 import { Button, Input, Layout, Modal } from 'antd';
 import { Header } from 'antd/es/layout/layout';
-import { SettingOutlined } from '@ant-design/icons';
+import {
+  LoginOutlined,
+  LogoutOutlined,
+  SettingOutlined,
+} from '@ant-design/icons';
+import { useLogin } from './hooks/use-login';
 export const App: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const token = localStorage.getItem('token');
+
+  const { mutateAsync: mutateLogin } = useLogin();
 
   const handleLogin = () => {
     setIsModalOpen(false);
-    setUserName('');
-    setPassword('');
-    navigate('/admin');
+    mutateLogin({ username: userName, password })
+      .then((res) => {
+        localStorage.setItem('token', res);
+        setUserName('');
+        setPassword('');
+        navigate('/admin');
+      })
+      .catch(() => {
+        setUserName('');
+        setPassword('');
+        navigate('/');
+      });
   };
   const handleCancelLogin = () => {
     setIsModalOpen(false);
     setUserName('');
     setPassword('');
+  };
+
+  const handleButton = () => {
+    if (token) {
+      handleLogout();
+      return;
+    }
+    setIsModalOpen(true);
+    return;
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/');
   };
 
   return (
@@ -30,14 +61,16 @@ export const App: React.FC = () => {
           <Button
             type='default'
             variant='filled'
-            icon={<SettingOutlined />}
+            icon={token ? <LogoutOutlined /> : <LoginOutlined />}
             style={{
               float: 'right',
               margin: '12px',
             }}
-            onClick={() => setIsModalOpen(true)}
+            onClick={() => {
+              handleButton();
+            }}
           >
-            Maintenance Mode
+            {token ? 'Logout' : 'Maintenance Mode'}
           </Button>
         </Header>
         <div className='sm:p-[24px] md:p-[48px] lg:p-[128px] xl:p-[256px] '>

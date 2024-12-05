@@ -1,9 +1,9 @@
-import { Service } from '@/service';
+import { AdminService } from '@/service/admin-service.apis';
 import { useMutation } from '@tanstack/react-query';
 
 export const useUpdateProductById = () => {
   const { isError, isPending, mutateAsync } = useMutation({
-    mutationFn: Service.updateProductById,
+    mutationFn: AdminService.updateProductById,
   });
 
   return {

@@ -1,5 +1,5 @@
-import { useGetReservedMoneyList } from '@/hooks/use-get-reserved-money-list';
-import { useUpdateReservedMoney } from '@/hooks/use-update-reserved-money';
+import { useGetReservedMoneyList } from '@/hooks/admin/use-get-reserved-money-list';
+import { useUpdateReservedMoney } from '@/hooks/admin/use-update-reserved-money';
 import { ReservedMoneyResponse } from '@/types/use-checkout-product.type';
 import { SaveOutlined } from '@ant-design/icons';
 import { Button, Form, InputNumber, Spin } from 'antd';

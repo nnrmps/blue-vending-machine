@@ -1,4 +1,3 @@
-import { useGetProductList } from '@/hooks/use-get-product-list';
 import { GetProductDetail } from '@/types/use-get-product-list.type';
 import {
   DeleteOutlined,
@@ -8,7 +7,8 @@ import {
 import { Button, Spin, Table } from 'antd';
 import { useState } from 'react';
 import { ModalEditProduct } from '../modal-edit-product/modal-edit-product';
-import { useDeleteProductById } from '@/hooks/use-delete-product-by-id';
+import { useDeleteProductById } from '@/hooks/admin/use-delete-product-by-id';
+import { useGetProductList } from '@/hooks/admin/use-get-product-list';
 
 export const TableProduct = () => {
   const {

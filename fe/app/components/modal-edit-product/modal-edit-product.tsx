@@ -1,10 +1,10 @@
-import { useCreateProduct } from '@/hooks/use-create-product';
-import { useGetProductById } from '@/hooks/use-get-product-by-id';
-import { useGetProductList } from '@/hooks/use-get-product-list';
-import { useUpdateProductById } from '@/hooks/use-update-product-by-id';
+import { useCreateProduct } from '@/hooks/admin/use-create-product';
+import { useUpdateProductById } from '@/hooks/admin/use-update-product-by-id';
 import { GetProductDetail } from '@/types/use-get-product-list.type';
 import { Button, Form, Input, InputNumber, Modal, Space } from 'antd';
 import { useEffect } from 'react';
+import { useGetProductById } from '@/hooks/admin/use-get-product-by-id';
+import { useGetProductList } from '@/hooks/admin/use-get-product-list';
 
 type ModalEditProductProps = {
   productId: string;

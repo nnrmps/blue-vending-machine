@@ -1,10 +1,6 @@
-import { axiosInstance, ServiceAdminAPI, ServiceAPI } from '@/service';
-import { LoginSchemaType } from '@/types/login.type';
-import {
-  CheckoutPayload,
-  CheckoutResponse,
-  ReservedMoneyResponse,
-} from '@/types/use-checkout-product.type';
+import { ServiceAdminAPI } from '@/service';
+
+import { ReservedMoneyResponse } from '@/types/use-checkout-product.type';
 import {
   GetProductDetail,
   GetProductListResponse,
@@ -15,30 +11,7 @@ import {
 } from '@/types/use-update-product-by-id.type';
 import { adminAxiosInstance } from './admin-axios-instance';
 
-export const Service = {
-  //user
-  getProductList: async (): Promise<GetProductListResponse> => {
-    const { data } = await axiosInstance.get(`${ServiceAPI.product}`);
-    return data.data;
-  },
-  getProductById: async (productId: string): Promise<GetProductDetail> => {
-    const { data } = await axiosInstance.get(
-      `${ServiceAPI.product}/${productId}`
-    );
-    return data.data;
-  },
-  checkoutProduct: async (
-    payload: CheckoutPayload
-  ): Promise<CheckoutResponse> => {
-    const { data } = await axiosInstance.post(ServiceAPI.checkout, payload);
-    return data;
-  },
-  login: async (payload: LoginSchemaType) => {
-    const { data } = await axiosInstance.post(ServiceAPI.login, payload);
-    return data;
-  },
-
-  //admin
+export const AdminService = {
   getAdminProductList: async (): Promise<GetProductListResponse> => {
     const { data } = await adminAxiosInstance.get(`${ServiceAdminAPI.product}`);
     return data.data;
