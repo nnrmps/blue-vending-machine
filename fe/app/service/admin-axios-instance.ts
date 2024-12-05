@@ -1,14 +1,14 @@
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const API_ENDPOINT = '/admin-api';
-
 export const adminAxiosInstance = axios.create({
   baseURL: API_ENDPOINT,
   withCredentials: true,
 });
 
 adminAxiosInstance.interceptors.request.use((config) => {
-  config.headers['Authorization'] = localStorage.getItem('token');
+  config.headers['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
   return config;
 });
 
@@ -17,6 +17,10 @@ adminAxiosInstance.interceptors.response.use(
     return response;
   },
   (error) => {
+    if (error.status === 401) {
+      window.location.replace('/');
+      localStorage.removeItem('token');
+    }
     return Promise.reject(error);
   }
 );
