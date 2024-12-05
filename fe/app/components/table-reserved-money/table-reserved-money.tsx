@@ -112,8 +112,8 @@ export const TableReserveMoney = () => {
           <InputNumber min={0} />
         </Form.Item>
         <Form.Item
-          label='110 THB'
-          name='bank1000'
+          label='100 THB'
+          name='bank100'
           rules={[
             {
               required: true,

@@ -1,23 +1,52 @@
 version: '3.8'
+
 services:
   web:
     container_name: blue-vending-machine-fe
-    image: nginx:latest
-    context: ..
+    build: ./fe
+    networks:
+      - blue-vending-machine-web
     ports:
-      - '8085:80'
+      - '3000:3000'
     restart: always
-  # api:
-  #   container_name: blue-vending-machine-be
-  #   image: nginx:latest
-  #   context: ..
-  #   ports:
-  #     - '8086:80'
-  #   restart: always
+
+  api:
+    container_name: blue-vending-machine-be
+    depends_on:
+      postgres:
+        condition: service_healthy
+    build: ./be
+    networks:
+      - blue-vending-machine-web
+    ports:
+      - '8080:8080'
+    restart: always
+
   postgres:
     image: postgres
+    networks:
+      - blue-vending-machine-web
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'pg_isready',
+          '-d',
+          'postgres://root:password@postgres:5432/postgres',
+        ]
+      interval: 15s # Increased interval time between checks
+      timeout: 15s # Increased timeout for each check
+      retries: 5 # Retry 5 times before marking unhealthy
+      start_period: 30s # Allow more time for initialization
     ports:
-      - 8087:80
+      - 5432:5432
     environment:
-      - PMA_ARBITRARY=1
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=password
     restart: always
+
+networks:
+  blue-vending-machine-web:
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.host_binding_ipv4: '127.0.0.1'
