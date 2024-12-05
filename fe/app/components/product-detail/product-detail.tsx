@@ -1,10 +1,11 @@
-import { Card, Modal, Space, Typography } from 'antd';
+import { Card, Image, Modal, Space, Typography } from 'antd';
 import { ShoppingOutlined, StopOutlined } from '@ant-design/icons';
 import { GradientButton } from '../button/gradient-button';
 import { useCheckoutProduct } from '@/hooks/use-checkout-product';
 import { totalPriceType } from '@/types/use-checkout-product.type';
 import { AxiosError } from 'axios';
 import { GetProductDetail } from '@/types/use-get-product-list.type';
+import NoImage from '@/assets/no-image.png';
 type ProductDetailProps = {
   data: GetProductDetail;
   isLoading: boolean;
@@ -212,7 +213,17 @@ export const ProductDetail = ({
       <Card
         loading={isLoading}
         className='w-[250px]'
-        cover={<img alt='product-image' src={data?.imageUrl} />}
+        cover={
+          <Image
+            alt='product-image'
+            className='rounded-t-[8px] object-cover'
+            width={250}
+            height={150}
+            src={data?.imageUrl}
+            fallback={NoImage}
+            preview={false}
+          />
+        }
         actions={[
           <GradientButton
             icon={outOfStock ? <StopOutlined /> : <ShoppingOutlined />}

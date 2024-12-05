@@ -81,9 +81,9 @@ export const TableProduct = () => {
       <div className='flex flex-col gap-[16px]'>
         <div>
           <Button
-            size='small'
             style={{ float: 'right' }}
             type='primary'
+            shape='round'
             icon={<PlusCircleOutlined />}
             onClick={() => handleEditProduct('')}
           >
