@@ -1,10 +1,10 @@
 import { Service } from '@/service';
 import { useQuery } from '@tanstack/react-query';
 
-export const useGetProductList = () => {
+export const useGetReservedMoneyList = () => {
   const { data, isLoading, refetch } = useQuery({
-    queryKey: ['productList'],
-    queryFn: () => Service.getProductList(),
+    queryKey: ['reserveMoneyList'],
+    queryFn: () => Service.getReservedMoneyList(),
   });
 
   return {

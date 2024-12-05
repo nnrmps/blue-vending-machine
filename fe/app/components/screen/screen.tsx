@@ -1,4 +1,3 @@
-import { Carousel } from 'antd';
 import { useGetProductList } from '@/hooks/use-get-product-list';
 import { ProductDetailType } from '@/types/use-get-product-list.type';
 import { ProductDetail } from '../product-detail/product-detail';
@@ -8,12 +7,14 @@ type ScreenProps = {
   totalPrice: totalPriceType;
   sumPrice: number;
   handleClearData: () => void;
+  onCheckout: (val: boolean) => void;
 };
 
 export const Screen = ({
   totalPrice,
   sumPrice,
   handleClearData,
+  onCheckout,
 }: ScreenProps) => {
   const { data, isLoading } = useGetProductList();
 
@@ -22,7 +23,7 @@ export const Screen = ({
   }
 
   return (
-    <div className='flex snap-x snap-mandatory overflow-y-auto bg-[#B3CEE5]'>
+    <div className='flex h-[400px] items-center snap-x snap-mandatory overflow-y-auto rounded-[8px] bg-[#B3CEE5]'>
       {data?.map((item: ProductDetailType) => (
         <div key={item.productId} className='snap-always snap-center p-[24px]'>
           <ProductDetail
@@ -31,6 +32,7 @@ export const Screen = ({
             totalPrice={totalPrice}
             sumPrice={sumPrice}
             handleClearData={handleClearData}
+            onCheckout={onCheckout}
           />
         </div>
       ))}

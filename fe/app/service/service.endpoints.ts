@@ -1,4 +1,5 @@
 export const ServiceAPI = {
-  getProduct: '/products',
+  product: '/products',
   checkout: '/checkout',
+  reservedMoney: '/reserved-money',
 };

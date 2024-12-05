@@ -1,9 +1,9 @@
 import { Service } from '@/service';
 import { useMutation } from '@tanstack/react-query';
 
-export const useCheckoutProduct = () => {
+export const useUpdateProductById = () => {
   const { isError, isPending, mutateAsync } = useMutation({
-    mutationFn: Service.checkoutProduct,
+    mutationFn: Service.updateProductById,
   });
 
   return {

@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Button, Col, Row, Statistic } from 'antd';
+import { Button, Col, Row, Spin, Statistic } from 'antd';
 import { UndoOutlined } from '@ant-design/icons';
 import { Screen } from '../screen/screen';
 export const Home = () => {
@@ -11,6 +11,7 @@ export const Home = () => {
   const [bank100, setBank100] = useState(0);
   const [bank500, setBank500] = useState(0);
   const [bank1000, setBank1000] = useState(0);
+  const [isLoadingCheckout, setIsLoadingCheckout] = useState(false);
 
   const sumPrice = useMemo(() => {
     return (
@@ -48,7 +49,7 @@ export const Home = () => {
   };
 
   return (
-    <>
+    <Spin spinning={isLoadingCheckout}>
       <Row gutter={[16, 24]} style={{ alignItems: 'center' }}>
         <Col span={24}>
           <div className='flex gap-[24px] justify-between items-center'>
@@ -78,6 +79,7 @@ export const Home = () => {
             totalPrice={totalPrice}
             sumPrice={sumPrice}
             handleClearData={handleResetMoney}
+            onCheckout={(val: boolean) => setIsLoadingCheckout(val)}
           />
         </Col>
 
@@ -154,6 +156,6 @@ export const Home = () => {
           </Button>
         </Col>
       </Row>
-    </>
+    </Spin>
   );
 };

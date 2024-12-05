@@ -1,9 +1,12 @@
-import { Card, Modal } from 'antd';
+import { Card, Modal, Space, Typography } from 'antd';
 import { ProductDetailType } from '@/types/use-get-product-list.type';
 import { ShoppingOutlined, StopOutlined } from '@ant-design/icons';
 import { GradientButton } from '../button/gradient-button';
 import { useCheckoutProduct } from '@/hooks/use-checkout-product';
-import { totalPriceType } from '@/types/use-checkout-product.type';
+import {
+  CheckoutResponse,
+  totalPriceType,
+} from '@/types/use-checkout-product.type';
 import { AxiosError } from 'axios';
 type ProductDetailProps = {
   data: ProductDetailType;
@@ -11,6 +14,7 @@ type ProductDetailProps = {
   totalPrice: totalPriceType;
   sumPrice: number;
   handleClearData: () => void;
+  onCheckout: (val: boolean) => void;
 };
 
 export const ProductDetail = ({
@@ -19,12 +23,42 @@ export const ProductDetail = ({
   totalPrice,
   sumPrice,
   handleClearData,
+  onCheckout,
 }: ProductDetailProps) => {
   const { Meta } = Card;
-  const { mutateAsync: mutateCheckout } = useCheckoutProduct();
+  const { mutateAsync: mutateCheckout, isLoading: isLoadingCheckout } =
+    useCheckoutProduct();
   const [modal, contextHolder] = Modal.useModal();
 
+  const { Text } = Typography;
+
   const outOfStock = data?.stock === 0;
+
+  const handleConfirmCheckout = () => {
+    Modal.confirm({
+      title: `Do you want to checkout "${data?.name}" ?`,
+      content: (
+        <Space direction='horizontal'>
+          <Text style={{ fontSize: '14px' }} strong>
+            Total Price:
+          </Text>
+          <Text style={{ fontSize: '14px' }}>
+            <Space direction='horizontal'>
+              <span>{data?.price}</span>
+              <span>THB</span>
+            </Space>
+          </Text>
+        </Space>
+      ),
+      okText: 'Confirm',
+      okType: 'primary',
+      cancelText: 'Cancel',
+      onOk: () => {
+        onCheckout(true);
+        handleCheckout();
+      },
+    });
+  };
 
   const handleCheckout = () => {
     mutateCheckout({
@@ -32,40 +66,158 @@ export const ProductDetail = ({
       total: totalPrice,
     })
       .then((res) => {
+        const {
+          coins1,
+          coins5,
+          coins10,
+          bank20,
+          bank50,
+          bank100,
+          bank500,
+          bank1000,
+          totalChange,
+        }: CheckoutResponse = res?.data;
         modal.success({
-          title: 'Checkout Success',
+          title: (
+            <div style={{ fontSize: '20px', marginTop: '-4px' }}>
+              Checkout Success
+            </div>
+          ),
           content: (
-            <>
-              <div>Total Change: {res?.data?.totalChange}</div>
-              <div>1 THB: {res?.data?.coins1} coins</div>
-              <div>5 THB: {res?.data?.coins5} coins</div>
-              <div>10 THB: {res?.data?.coins10} coins</div>
-              <div>20 THB: {res?.data?.bank20} coins</div>
-              <div>50 THB: {res?.data?.bank50} coins</div>
-              <div>100 THB: {res?.data?.bank100} coins</div>
-              <div>500 THB: {res?.data?.bank500} coins</div>
-              <div>1000 THB: {res?.data?.bank1000} coins</div>
-            </>
+            <div className='flex flex-col gap-[12px]'>
+              <div>
+                <Space direction='horizontal'>
+                  <Text style={{ fontSize: '16px' }} strong>
+                    Total Change:
+                  </Text>
+                  <Text style={{ fontSize: '16px' }}>
+                    <Space direction='horizontal'>
+                      <span>{totalChange}</span>
+                      <span>THB</span>
+                    </Space>
+                  </Text>
+                </Space>
+              </div>
+              <div className='flex flex-col gap-[4px] ml-[2px]'>
+                <Space direction='horizontal'>
+                  <Text style={{ fontSize: '12px' }} strong>
+                    1 THB:
+                  </Text>
+                  <Text style={{ fontSize: '12px' }}>
+                    <Space direction='horizontal'>
+                      <span>{coins1}</span>
+                      <span>coins</span>
+                    </Space>
+                  </Text>
+                </Space>
+                <Space direction='horizontal'>
+                  <Text style={{ fontSize: '12px' }} strong>
+                    5 THB:
+                  </Text>
+                  <Text style={{ fontSize: '12px' }}>
+                    <Space direction='horizontal'>
+                      <span>{coins5}</span>
+                      <span>coins</span>
+                    </Space>
+                  </Text>
+                </Space>
+                <Space direction='horizontal'>
+                  <Text style={{ fontSize: '12px' }} strong>
+                    10 THB:
+                  </Text>
+                  <Text style={{ fontSize: '12px' }}>
+                    <Space direction='horizontal'>
+                      <span>{coins10}</span>
+                      <span>coins</span>
+                    </Space>
+                  </Text>
+                </Space>
+                <Space direction='horizontal'>
+                  <Text style={{ fontSize: '12px' }} strong>
+                    20 THB:
+                  </Text>
+                  <Text style={{ fontSize: '12px' }}>
+                    <Space direction='horizontal'>
+                      <span>{bank20}</span>
+                      <span>banknotes</span>
+                    </Space>
+                  </Text>
+                </Space>
+                <Space direction='horizontal'>
+                  <Text style={{ fontSize: '12px' }} strong>
+                    50 THB:
+                  </Text>
+                  <Text style={{ fontSize: '12px' }}>
+                    <Space direction='horizontal'>
+                      <span>{bank50}</span>
+                      <span>banknotes</span>
+                    </Space>
+                  </Text>
+                </Space>
+                <Space direction='horizontal'>
+                  <Text style={{ fontSize: '12px' }} strong>
+                    100 THB:
+                  </Text>
+                  <Text style={{ fontSize: '12px' }}>
+                    <Space direction='horizontal'>
+                      <span>{bank100}</span>
+                      <span>banknotes</span>
+                    </Space>
+                  </Text>
+                </Space>
+                <Space direction='horizontal'>
+                  <Text style={{ fontSize: '12px' }} strong>
+                    500 THB:
+                  </Text>
+                  <Text style={{ fontSize: '12px' }}>
+                    <Space direction='horizontal'>
+                      <span>{bank500}</span>
+                      <span>banknotes</span>
+                    </Space>
+                  </Text>
+                </Space>
+                <Space direction='horizontal'>
+                  <Text style={{ fontSize: '12px' }} strong>
+                    1000 THB:
+                  </Text>
+                  <Text style={{ fontSize: '12px' }}>
+                    <Space direction='horizontal'>
+                      <span>{bank1000}</span>
+                      <span>banknotes</span>
+                    </Space>
+                  </Text>
+                </Space>
+              </div>
+            </div>
           ),
           onOk() {
             handleClearData();
           },
+          okText: 'Close',
+          okButtonProps: { className: 'bg-[#ff4d4f]' },
         });
       })
       .catch((error) => {
         if (error instanceof AxiosError) {
           modal.error({
-            title: 'Checkout Filed!',
+            title: (
+              <div style={{ fontSize: '20px', marginTop: '-4px' }}>
+                Checkout Failed!
+              </div>
+            ),
             content: (
-              <>
-                <div>{error?.response?.data}</div>
-              </>
+              <Text style={{ fontSize: '14px' }}>{error?.response?.data}</Text>
             ),
             onOk() {
               handleClearData();
             },
+            okText: 'Close',
+            okButtonProps: { className: 'bg-[#ff4d4f]' },
           });
         }
+      })
+      .finally(() => {
+        onCheckout(false);
       });
   };
 
@@ -73,6 +225,7 @@ export const ProductDetail = ({
     <>
       <Card
         loading={isLoading}
+        className='w-[250px]'
         cover={<img alt='product-image' src={data?.imageUrl} />}
         actions={[
           <GradientButton
@@ -80,12 +233,50 @@ export const ProductDetail = ({
             title={outOfStock ? 'Out of Stock!' : 'Buy Now!'}
             variant='filled'
             type='primary'
-            disabled={sumPrice < data?.price || outOfStock}
-            onClick={handleCheckout}
+            disabled={sumPrice < data?.price || outOfStock || isLoadingCheckout}
+            onClick={handleConfirmCheckout}
           />,
         ]}
       >
-        <Meta title={data?.name} description={data?.price} />
+        <Meta
+          title={
+            <Text ellipsis style={{ fontSize: '20px' }} strong>
+              {data?.name}
+            </Text>
+          }
+          description={
+            <div className='flex flex-col gap-[6px]'>
+              <Space direction='horizontal'>
+                <Text style={{ fontSize: '16px' }} strong>
+                  Price:
+                </Text>
+                <Text style={{ fontSize: '16px' }}>
+                  <Space direction='horizontal'>
+                    <span>{data?.price}</span>
+                    <span>THB</span>
+                  </Space>
+                </Text>
+              </Space>
+              <Space direction='horizontal'>
+                <Text style={{ fontSize: '16px' }} strong>
+                  Total Stock:
+                </Text>
+                <Text style={{ fontSize: '16px' }}>
+                  <Space direction='horizontal'>
+                    <span>
+                      {data?.stock > 9999
+                        ? '9,999+'
+                        : data?.stock
+                            .toString()
+                            .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                    </span>
+                    <span>Piece</span>
+                  </Space>
+                </Text>
+              </Space>
+            </div>
+          }
+        />
       </Card>
       {contextHolder}
     </>

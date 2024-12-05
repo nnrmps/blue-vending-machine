@@ -8,5 +8,5 @@ const ProductDetail = z.object({
   price: z.number(),
 });
 
-export type GetProductDetail = z.infer<typeof ProductDetail>;
-export type GetProductListResponse = GetProductDetail[];
+export type UpdateProductPayload = z.infer<typeof ProductDetail>;
+export type CreateProductPayload = Omit<UpdateProductPayload, 'productId'>;

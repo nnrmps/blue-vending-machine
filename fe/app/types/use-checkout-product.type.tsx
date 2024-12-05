@@ -31,3 +31,4 @@ const CheckoutResponseSchema = z.object({
 export type totalPriceType = z.infer<typeof TotalSchema>;
 export type CheckoutPayload = z.infer<typeof CheckoutPayloadSchema>;
 export type CheckoutResponse = z.infer<typeof CheckoutResponseSchema>;
+export type ReservedMoneyResponse = Omit<CheckoutResponse, 'totalChange'>;
