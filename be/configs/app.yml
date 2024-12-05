@@ -4,3 +4,5 @@ database:
   password: password
   port: 5432
   name: postgres
+
+secret-key: t5r4e3w2q1

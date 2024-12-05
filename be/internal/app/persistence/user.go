@@ -1,6 +1,7 @@
 package persistence
 
 type User struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
+	UserId   int64 `gorm:"primaryKey"`
+	Username string
+	Password string
 }

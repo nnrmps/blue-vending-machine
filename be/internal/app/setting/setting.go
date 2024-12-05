@@ -8,7 +8,8 @@ import (
 var AppConfig Configuration
 
 type Configuration struct {
-	Database database `mapstructure:"database"`
+	Database  database `mapstructure:"database"`
+	SecretKey string   `mapstructure:"secret-key"`
 }
 
 type database struct {

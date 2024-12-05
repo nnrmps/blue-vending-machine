@@ -18,6 +18,11 @@ func NewProductController(productService service.ProductService) *ProductControl
 func (p ProductController) InitRouter(router fiber.Router) {
 	router.Get("/products", p.getProductList)
 	router.Get("/products/:productID", p.getProductByID)
+}
+
+func (p ProductController) InitAdminRouter(router fiber.Router) {
+	router.Get("/products", p.getProductList)
+	router.Get("/products/:productID", p.getProductByID)
 	router.Post("/products", p.createProduct)
 	router.Put("/products/:productID", p.updateProductByID)
 	router.Delete("/products/:productID", p.deleteProductByID)
