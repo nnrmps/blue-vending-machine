@@ -6,6 +6,7 @@ import { totalPriceType } from '@/types/use-checkout-product.type';
 import { AxiosError } from 'axios';
 import { GetProductDetail } from '@/types/use-get-product-list.type';
 import NoImage from '@/assets/no-image.png';
+import { useGetProductList } from '@/hooks/use-get-product-list';
 type ProductDetailProps = {
   data: GetProductDetail;
   isLoading: boolean;
@@ -26,6 +27,7 @@ export const ProductDetail = ({
   const { Meta } = Card;
   const { mutateAsync: mutateCheckout, isLoading: isLoadingCheckout } =
     useCheckoutProduct();
+  const { refetch: refetchProductList } = useGetProductList();
   const [modal, contextHolder] = Modal.useModal();
 
   const { Text } = Typography;
@@ -178,6 +180,7 @@ export const ProductDetail = ({
             </div>
           ),
           onOk() {
+            refetchProductList();
             handleClearData();
           },
           okText: 'Close',

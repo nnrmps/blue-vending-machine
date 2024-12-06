@@ -3,6 +3,7 @@ module github.com/nnrmps/blue-vending-machine/be
 go 1.22.8
 
 require (
+	github.com/go-gormigrate/gormigrate/v2 v2.1.3
 	github.com/gofiber/contrib/jwt v1.0.10
 	github.com/gofiber/fiber/v2 v2.52.5
 	github.com/golang-jwt/jwt/v5 v5.2.1

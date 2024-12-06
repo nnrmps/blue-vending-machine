@@ -4,11 +4,11 @@ import (
 	"fmt"
 	jwtware "github.com/gofiber/contrib/jwt"
 	"github.com/gofiber/fiber/v2"
-	"github.com/nnrmps/blue-vending-machine/be/internal/app/persistence"
 	"github.com/nnrmps/blue-vending-machine/be/internal/app/repository"
 	"github.com/nnrmps/blue-vending-machine/be/internal/app/router"
 	"github.com/nnrmps/blue-vending-machine/be/internal/app/service"
 	"github.com/nnrmps/blue-vending-machine/be/internal/app/setting"
+	"github.com/nnrmps/blue-vending-machine/be/internal/migration"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"log"
@@ -44,12 +44,16 @@ func main() {
 		setting.AppConfig.Database.Name,
 		setting.AppConfig.Database.Port)
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
-	db.AutoMigrate(persistence.Product{})
-	db.AutoMigrate(persistence.ReservedMoney{})
-	db.AutoMigrate(persistence.User{})
+	//db.AutoMigrate(persistence.Product{})
+	//db.AutoMigrate(persistence.ReservedMoney{})
+	//db.AutoMigrate(persistence.User{})
 	if err != nil {
 		panic("failed to connect database")
 	}
+
+	//migrate DB
+	migrator := migration.NewMigrator(db)
+	migrator.Migrate()
 
 	//health
 	healthService := service.NewHealthService()
