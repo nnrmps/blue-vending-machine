@@ -42,6 +42,7 @@ func updateReservedMoney(reservedMoney map[int64]int64, total request_model.Mone
 }
 
 func (c checkoutService) CheckoutProduct(ctx context.Context, productID string, total request_model.Money) (response_model.Checkout, error) {
+
 	productDetail, err := c.productRepository.GetProductByID(ctx, c.db, productID)
 	if err != nil {
 		return response_model.Checkout{}, err
@@ -60,6 +61,7 @@ func (c checkoutService) CheckoutProduct(ctx context.Context, productID string, 
 	if err != nil {
 		return response_model.Checkout{}, err
 	}
+
 	reservedMoney = updateReservedMoney(reservedMoney, total)
 
 	totalChange := totalDeposit - productDetail.Price
@@ -75,8 +77,8 @@ func (c checkoutService) CheckoutProduct(ctx context.Context, productID string, 
 		5:    0,
 		1:    0,
 	}
-	i := 0
 
+	i := 0
 	for totalChange > 0 {
 		if i >= len(moneyList) {
 			return response_model.Checkout{}, errors.New("Sorry, don't have enough change.")
@@ -90,14 +92,17 @@ func (c checkoutService) CheckoutProduct(ctx context.Context, productID string, 
 		i++
 	}
 
-	newReservedMoney := persistence.ReservedMoney{Coins1: reservedMoney[1],
+	newReservedMoney := persistence.ReservedMoney{
+		Coins1:   reservedMoney[1],
 		Coins5:   reservedMoney[5],
 		Coins10:  reservedMoney[10],
 		Bank20:   reservedMoney[20],
 		Bank50:   reservedMoney[50],
 		Bank100:  reservedMoney[100],
 		Bank500:  reservedMoney[500],
-		Bank1000: reservedMoney[1000]}
+		Bank1000: reservedMoney[1000],
+	}
+
 	tx := c.db.Begin()
 
 	err = c.checkoutRepository.UpdateReservedMoney(ctx, tx, newReservedMoney)
@@ -113,6 +118,7 @@ func (c checkoutService) CheckoutProduct(ctx context.Context, productID string, 
 	}
 
 	tx.Commit()
+
 	newRes := response_model.Checkout{
 		TotalChange: totalDeposit - productDetail.Price,
 		Coins1:      finalReservedMoney[1],

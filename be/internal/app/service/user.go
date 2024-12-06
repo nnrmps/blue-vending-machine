@@ -27,7 +27,6 @@ func NewUserService(db *gorm.DB, userRepository repository.UserRepository) UserS
 
 func (u userService) Login(ctx context.Context, username string, password string) (string, error) {
 	res, err := u.userRepository.Login(ctx, u.db, username, password)
-
 	if err != nil {
 		return "", err
 	}
@@ -39,9 +38,9 @@ func (u userService) Login(ctx context.Context, username string, password string
 		})
 
 	tokenString, err := token.SignedString([]byte(setting.AppConfig.SecretKey))
-
 	if err != nil {
 		return "", err
 	}
+
 	return tokenString, err
 }
