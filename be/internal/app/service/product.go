@@ -30,6 +30,9 @@ func NewProductService(db *gorm.DB, productRepository repository.ProductReposito
 
 func (p productService) GetProductByID(ctx context.Context, productID string) (response_model.Product, error) {
 	res, err := p.productRepository.GetProductByID(ctx, p.db, productID)
+	if err != nil {
+		return response_model.Product{}, err
+	}
 	newRes := response_model.Product{
 		res.ProductID.String(),
 		res.Name,
@@ -42,7 +45,11 @@ func (p productService) GetProductByID(ctx context.Context, productID string) (r
 }
 
 func (p productService) GetProductList(ctx context.Context) ([]response_model.Product, error) {
-	res := p.productRepository.GetList(ctx, p.db)
+	res, err := p.productRepository.GetList(ctx, p.db)
+	if err != nil {
+		return []response_model.Product{}, err
+	}
+
 	newRes := make([]response_model.Product, 0)
 
 	for _, value := range res {

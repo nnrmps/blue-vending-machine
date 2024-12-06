@@ -10,6 +10,8 @@ import (
 	"gorm.io/gorm"
 )
 
+var moneyList = []int64{1000, 500, 100, 50, 20, 10, 5, 1}
+
 type CheckoutService interface {
 	CheckoutProduct(ctx context.Context, productID string, total request_model.Money) (response_model.Checkout, error)
 }
@@ -66,8 +68,7 @@ func (c checkoutService) CheckoutProduct(ctx context.Context, productID string, 
 
 	totalChange := totalDeposit - productDetail.Price
 
-	moneyList := []int64{1000, 500, 100, 50, 20, 10, 5, 1}
-	finalReservedMoney := map[int64]int64{
+	finalChange := map[int64]int64{
 		1000: 0,
 		500:  0,
 		100:  0,
@@ -85,7 +86,7 @@ func (c checkoutService) CheckoutProduct(ctx context.Context, productID string, 
 		}
 		if reservedMoney[moneyList[i]] > 0 && totalChange-moneyList[i] >= 0 {
 			reservedMoney[moneyList[i]] -= 1
-			finalReservedMoney[moneyList[i]] += 1
+			finalChange[moneyList[i]] += 1
 			totalChange = totalChange - moneyList[i]
 			continue
 		}
@@ -111,7 +112,7 @@ func (c checkoutService) CheckoutProduct(ctx context.Context, productID string, 
 		return response_model.Checkout{}, err
 	}
 
-	err = c.productRepository.UpdateStockByProductID(ctx, tx, productID, productDetail.Stock-1)
+	err = c.productRepository.DeductStockByProductID(ctx, tx, productID, productDetail.Stock-1)
 	if err != nil {
 		tx.Rollback()
 		return response_model.Checkout{}, err
@@ -121,14 +122,14 @@ func (c checkoutService) CheckoutProduct(ctx context.Context, productID string, 
 
 	newRes := response_model.Checkout{
 		TotalChange: totalDeposit - productDetail.Price,
-		Coins1:      finalReservedMoney[1],
-		Coins5:      finalReservedMoney[5],
-		Coins10:     finalReservedMoney[10],
-		Bank20:      finalReservedMoney[20],
-		Bank50:      finalReservedMoney[50],
-		Bank100:     finalReservedMoney[100],
-		Bank500:     finalReservedMoney[500],
-		Bank1000:    finalReservedMoney[1000],
+		Coins1:      finalChange[1],
+		Coins5:      finalChange[5],
+		Coins10:     finalChange[10],
+		Bank20:      finalChange[20],
+		Bank50:      finalChange[50],
+		Bank100:     finalChange[100],
+		Bank500:     finalChange[500],
+		Bank1000:    finalChange[1000],
 	}
 
 	return newRes, nil

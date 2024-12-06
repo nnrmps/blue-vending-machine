@@ -9,9 +9,9 @@ import (
 )
 
 type ProductRepository interface {
-	GetList(ctx context.Context, tx *gorm.DB) []persistence.Product
+	GetList(ctx context.Context, tx *gorm.DB) ([]persistence.Product, error)
 	GetProductByID(ctx context.Context, tx *gorm.DB, productID string) (persistence.Product, error)
-	UpdateStockByProductID(ctx context.Context, tx *gorm.DB, productID string, stock int64) error
+	DeductStockByProductID(ctx context.Context, tx *gorm.DB, productID string, stock int64) error
 	UpdateProductByID(ctx context.Context, tx *gorm.DB, productID string, req request_model.UpdateProductByID) (persistence.Product, error)
 	CreateProduct(ctx context.Context, tx *gorm.DB, req request_model.CreateProduct) (persistence.Product, error)
 	DeleteProductByID(ctx context.Context, tx *gorm.DB, productID string) error
@@ -20,11 +20,11 @@ type ProductRepository interface {
 type productRepository struct {
 }
 
-func (p productRepository) GetList(ctx context.Context, tx *gorm.DB) []persistence.Product {
+func (p productRepository) GetList(ctx context.Context, tx *gorm.DB) ([]persistence.Product, error) {
 	product := make([]persistence.Product, 0)
 	tx.Find(&product)
 
-	return product
+	return product, tx.Error
 }
 
 func (p productRepository) GetProductByID(ctx context.Context, tx *gorm.DB, productID string) (persistence.Product, error) {
@@ -34,7 +34,7 @@ func (p productRepository) GetProductByID(ctx context.Context, tx *gorm.DB, prod
 	return product, tx.Error
 }
 
-func (p productRepository) UpdateStockByProductID(ctx context.Context, tx *gorm.DB, productID string, stock int64) error {
+func (p productRepository) DeductStockByProductID(ctx context.Context, tx *gorm.DB, productID string, stock int64) error {
 	product := persistence.Product{}
 	tx.Model(&product).Where("product_id = ?", productID).Update("stock", stock)
 	return tx.Error
