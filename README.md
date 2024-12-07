@@ -1,5 +1,5 @@
 ## How to
-### run project
+#### run project
 
 run `docker compose up --build`
 
@@ -9,7 +9,7 @@ run `docker compose up --build`
 | backend  | 8080 |
 | postgres | 5432 |
 
-### run test
+#### run test
 run `make run-test` in *./be* folder
 
 ### Maintenance Mode
