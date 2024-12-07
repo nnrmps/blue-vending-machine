@@ -1,6 +1,5 @@
-# blue-vending-machine
 ## How to
-### How to run the project
+### run project
 
 run `docker compose up --build`
 
@@ -10,7 +9,7 @@ run `docker compose up --build`
 | backend  | 8080 |
 | postgres | 5432 |
 
-### How to run test
+### run test
 run `make run-test` in *./be* folder
 
 ### Maintenance Mode
