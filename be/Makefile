@@ -7,3 +7,6 @@ gen-mock:
 	mockgen -destination internal/mock/repository/reserved_money.go -package=repository_mock -source=internal/app/repository/reserved_money.go ReservedMoneyRepository
 	mockgen -destination internal/mock/repository/product.go -package=repository_mock -source=internal/app/repository/product.go ProductRepository
 	mockgen -destination internal/mock/repository/user.go -package=repository_mock -source=internal/app/repository/user.go UserRepository
+
+run-test:
+	go test -v ./...
